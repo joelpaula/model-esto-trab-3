@@ -10,7 +10,7 @@ Autores | Authors:
 > 
 > Airline check-in simulation
 
-Read the report in on of the formats:
+Read the report in one of the formats:
 
 [MarkDown](/Trabalho3_ME.md) |
  [Html](/Trabalho3_ME.html) |
