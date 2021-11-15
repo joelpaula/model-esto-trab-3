@@ -383,18 +383,18 @@ library(simmer.plot)</code></pre>
 <ul>
 <li><p>Os voos são de 170 passageiros, contudo a ocupação dos voos pode não ser completa;</p></li>
 <li><p>O Check-in abre 2h antes da partida do voo e fecha 40 min antes da hora da partida;</p></li>
-<li><p>Chegada de passageiros – os passageiros chegam ao check-in de acordo com uma distribuição de Poisson com média diferente consoante o tipo de passageiro:</p>
+<li><p>Chegada de passageiros – os passageiros chegam ao <em>check-in</em> de acordo com uma distribuição de Poisson com média diferente consoante o tipo de passageiro:</p>
 <ul>
-<li>Economy (média - 1,7);</li>
-<li>Business (média - 0,85);</li>
+<li><em>Economy</em> (média - 1,7);</li>
+<li><em>Business</em> (média - 0,85);</li>
 </ul></li>
-<li><p>Os passageiros Business, assim como os passageiros que sejam membros Gold/Premium são 20% do total dos passageiros. São considerados no sistema como passageiros Vip e são servidos por apenas um balcão de passageiros – o balcão Vip;</p></li>
-<li><p>Os passageiros Vip fazem o check-in entre os 80 e 40 minutos antes do voo;</p></li>
-<li><p>Os passageiros podem fazer o check-in individualmente ou em grupo; no entanto, por uma questão de simplicidade, vamos considerar que os grupos de passageiros fazem o check-in individualmente, pelo que são considerados como passageiros individuais;</p></li>
-<li><p>A empresa de viação disponibiliza dois balcões para passageiros Economy e um para passageiros Vip. Existe ainda uma máquina que pode ser utilizada por passageiros Economy que não tenham que despachar bagagem;</p></li>
-<li><p>A fila do check-in para os passageiros Economy que tenham bagagem para despachar pode ser única ou por balcão;</p></li>
-<li><p>75% dos passageiros Economy despacham a bagagem. Neste caso, o tempo de atendimento no check-in demora mais 30 segundos;</p></li>
-<li><p>O tempo de atendimento no check-in (tempo de serviço) tem distribuição triangular com parâmetros apresentados na tabela seguinte (em segundos):</p></li>
+<li><p>Os passageiros <em>Business</em>, assim como os passageiros que sejam membros <em>Gold</em>/<em>Premium</em> são 20% do total dos passageiros. São considerados no sistema como passageiros <em>Vip</em> e são servidos por apenas um balcão de passageiros – o <em>balcão Vip</em>;</p></li>
+<li><p>Os passageiros <em>Vip</em> fazem o <em>check-in</em> entre os 80 e 40 minutos antes do voo;</p></li>
+<li><p>Os passageiros podem fazer o <em>check-in</em> individualmente ou em grupo; no entanto, por uma questão de simplicidade, vamos considerar que os grupos de passageiros fazem o <em>check-in</em> individualmente, pelo que são considerados como passageiros individuais;</p></li>
+<li><p>A empresa de viação disponibiliza dois balcões para passageiros <em>Economy</em> e um para passageiros <em>Vip</em>. Existe ainda uma máquina que pode ser utilizada por passageiros <em>Economy</em> que não tenham que despachar bagagem;</p></li>
+<li><p>A fila do <em>check-in</em> para os passageiros <em>Economy</em> que tenham bagagem para despachar pode ser única ou por balcão;</p></li>
+<li><p>75% dos passageiros <em>Economy</em> despacham a bagagem. Neste caso, o tempo de atendimento no <em>check-in</em> demora mais 30 segundos;</p></li>
+<li><p>O tempo de atendimento no <em>check-in</em> (tempo de serviço) tem distribuição triangular com parâmetros apresentados na tabela seguinte (em segundos):</p></li>
 </ul>
 <table style="width:42%;">
 <colgroup>
@@ -430,20 +430,22 @@ library(simmer.plot)</code></pre>
 <hr />
 <p>Analise o tempo total do processo de check-in nos dois cenários seguintes:</p>
 <div id="análise-do-impacto-da-estratégia-de-fila-dos-balcões-não-vip-na-distribuição-do-tempo-total-do-check-in" class="section level2">
-<h2>Análise do impacto da estratégia de fila dos balcões não VIP na distribuição do tempo total do check-in</h2>
+<h2>1) Análise do impacto da estratégia de fila dos balcões não <em>VIP</em> na distribuição do tempo total do <em>check-in</em></h2>
 <blockquote>
-<p>Decidimos converter todos os tempos em segundos, já que achamos que seria melhor ter essa resolução, para cumprir todas as premissas do problema.</p>
+<p>Nota: decidimos converter todos os tempos em segundos, já que achamos que seria melhor ter essa resolução, para cumprir todas as premissas do problema.</p>
 </blockquote>
 <pre class="r"><code>runs &lt;- 100
 # Notas:
-# se checkin esta aberto entre os 120min (2h00) e os 40min antes do voo, significa estar aberto durante 80min (4800s)
-# se checkin para vip esta aberto entre os 80min e os 40min antes do voo, significa estar aberto durante 40min (2400s)
+# Se checkin esta aberto entre os 120min (2h00) e os 40min antes do voo, significa estar aberto
+# durante 80min (4800s).
+# Se checkin para vip esta aberto entre os 80min e os 40min antes do voo, significa estar 
+# aberto durante 40min (2400s)
 
 # definicao de tempos (em segundos) e outros parametros necessarios:
 overall_checkin_time &lt;- 4800 # tempo total do processo de checkin (80min = 4800s)
-close_checkin_all &lt;- overall_checkin_time # t_i em que se da fecho de checkin para todos os passageiros
-begin_checkin_economy &lt;- 1 # t_i em que se da abertura do checkin para passageiros economy
-begin_checkin_vip &lt;- 2400 # t_i em que se da abertura do checkin para passageiros vip (40min = 2400s)
+close_checkin_all &lt;- overall_checkin_time # t_i em que fecha o checkin para todos os passageiros
+begin_checkin_economy &lt;- 1 # t_i em que abre o checkin para passageiros economy
+begin_checkin_vip &lt;- 2400 # t_i em que abre o checkin para passageiros vip (40min = 2400s)
 dur_checkin_vip &lt;- begin_checkin_vip
 dur_checkin_economy &lt;- overall_checkin_time
 
@@ -485,19 +487,22 @@ economy_passenger &lt;-
     trajectory() %&gt;%
     #log_(&quot;Arrived at Check-In Area.&quot;) %&gt;%
     branch(
-        function() (runif(1) &gt; 0.75) + 1, continue = c(FALSE, FALSE), # 75% tem bagagem, 25% nao tem bagagem
+        # 75% tem bagagem, 25% nao tem bagagem
+        function() (runif(1) &gt; 0.75) + 1, continue = c(FALSE, FALSE), 
         trajectory() %&gt;% # trajectoria do passageiro se tiver bagagem
             # log_(&quot;I have luggage to check.&quot;) %&gt;%
-            select(c(&quot;standard_counter1&quot;, &quot;standard_counter2&quot;), policy = &quot;shortest-queue&quot;) %&gt;% # cada balcao com fila individual
+            # cada balcao com fila individual
+            select(c(&quot;standard_counter1&quot;, &quot;standard_counter2&quot;), policy = &quot;shortest-queue&quot;) %&gt;% 
             seize_selected() %&gt;%
             # log_(&quot;Making Check-In...&quot;) %&gt;%
             timeout(function() rtriang(
+                # a=min, b=max, c=moda; tem tempo extra da bagagem
                 n = 1,
                 a = triang_counter_min,
                 b = triang_counter_max,
-                c = triang_counter_mode) + extra_time_luggage) %&gt;% # a=min, b=max, c=moda; tem tempo extra da bagagem
+                c = triang_counter_mode) + extra_time_luggage) %&gt;% 
             release_selected() , #%&gt;%
-            # log_(&quot;Check-in completed! Leaving Standard Counter and going to Security Checkpoint.&quot;),
+            # log_(&quot;Check-in completed! Leaving Standard Counter, to the Security Checkpoint.&quot;),
         trajectory() %&gt;% # trajectoria do passageiro sem bagagem
             # log_(&quot;I just have carry-on.&quot;) %&gt;%
             seize(&quot;sc_machine&quot;) %&gt;%
@@ -508,14 +513,15 @@ economy_passenger &lt;-
                 b = triang_machine_max,
                 c = triang_machine_mode)) %&gt;% # a=min, b=max, c=moda
             release(&quot;sc_machine&quot;) #%&gt;%
-            # log_(&quot;Check-in completed! Leaving Self Check-In and going to Security Checkpoint.&quot;)
+            # log_(&quot;Check-in completed! Leaving Self Check-In, to the Security Checkpoint.&quot;)
     )
 
 # horarios de funcionamento do checkin para passageiros VIP
 vip_checkin_schedule &lt;-
     schedule(
         c(begin_checkin_vip, close_checkin_all),
-        c(1, 0), period = overall_checkin_time) # capacidade de atender 1 passageiro de cada vez
+        # capacidade de atender 1 passageiro de cada vez
+        c(1, 0), period = overall_checkin_time) 
 
 # horarios de funcionamento do checkin para passageiros Economy
     # no nosso caso concreto nao seria necessario definir porque:
@@ -524,28 +530,37 @@ vip_checkin_schedule &lt;-
 economy_checkin_schedule &lt;-
     schedule(
         c(begin_checkin_economy, close_checkin_all),
-        c(1, 0), period = overall_checkin_time) # capacidade de atender 1 passageiro de cada vez
+        # capacidade de atender 1 passageiro de cada vez
+        c(1, 0), period = overall_checkin_time) 
 
-set.seed(42)
+
+set.seed(42) # Simulation seed
 
 # Ambiente de Simulacao (100 vezes)
 envs &lt;- lapply(1:runs, function(i) {
     simmer(&quot;Check-In&quot;) %&gt;%
-    add_resource(&quot;vip_counter&quot;, capacity = vip_checkin_schedule) %&gt;% # so 1 balcao vip, sujeito ao horario checkin vip
-    add_resource(&quot;standard_counter1&quot;, capacity = economy_checkin_schedule) %&gt;% # 2 balcoes para passageiros economy
+    add_resource(&quot;vip_counter&quot;, capacity = vip_checkin_schedule) %&gt;% 
+      # so 1 balcao vip, sujeito ao horario checkin vip
+    add_resource(&quot;standard_counter1&quot;, capacity = economy_checkin_schedule) %&gt;% 
+      # 2 balcoes para passageiros economy
     add_resource(&quot;standard_counter2&quot;, capacity = economy_checkin_schedule) %&gt;%
-    add_resource(&quot;sc_machine&quot;, capacity = economy_checkin_schedule) %&gt;% # temos uma maquina self-checkin para passageiros sem bagagem
+    add_resource(&quot;sc_machine&quot;, capacity = economy_checkin_schedule) %&gt;% 
+      # temos uma maquina self-checkin para passageiros sem bagagem
     add_generator(&quot;VIP Passenger&quot;, 
+      # &quot;gerador&quot; de passageiros VIP chegam ao check-in com uma distribuicao Poisson (0.85)
                  vip_passenger, 
                  from_to(start_time = begin_checkin_vip,
                          stop_time = close_checkin_all,
-                         dist = function() { c(rpois(n = n_max_vip, lambda = vip_passenger_lambda), -1) },
-                         arrive = F),
-                 )  %&gt;% # &quot;gerador&quot; de passageiros VIP chegam ao check-in com uma distribuicao Poisson (0.85)
+                         dist = function() { 
+                           c(rpois(n = n_max_vip, lambda = vip_passenger_lambda), -1) 
+                           },
+                         arrive = F),)  %&gt;% 
     add_generator(&quot;Economy Passenger&quot;, 
+      # &quot;gerador&quot; de passageiros Economy chegam ao check-in com uma distribuicao Poisson (1.7)
                  economy_passenger, 
-                 function() { c(rpois(n = n_max_economy, lambda = economy_passenger_lambda), -1) }
-                 ) %&gt;% # &quot;gerador&quot; de passageiros Economy chegam ao check-in com uma distribuicao Poisson (1.7)
+                 function() { 
+                   c(rpois(n = n_max_economy, lambda = economy_passenger_lambda), -1) 
+                   }) %&gt;% 
     run(until = close_checkin_all) # Simulador do check-in (desenrola-se por 1h20)
 })
 
@@ -582,14 +597,22 @@ summary(arrivals$waiting_time/60)</code></pre>
 summary(arrivals[grepl(&quot;VIP Passenger&quot;, arrivals$name),]$waiting_time/60)</code></pre>
 <pre><code>##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
 ##   0.000   8.899  18.670  18.582  28.359  38.488</code></pre>
-<p>Experimentando a fila única para os passageiros Economy:</p>
+<p>Nesta primeira simulação, em que temos filas individuais para cada balcão de atendimento, verificamos o seguinte:</p>
+<ul>
+<li><p>Qualquer um dos recursos (máquina de <em>check-in</em>, balcão <em>VIP</em>, e os dois balcões para classe <em>Economy</em>) são usados a 100% (gráficos <em>Resource Utilization</em> e <em>Resource Usage</em>), a partir do momento em que aparecem passageiros. Nos gráficos respeitantes ao <em>“Resource Usage”</em> com o parâmetro <em>“steps”</em> activo, podemos verificar que a máquina de <em>check-in</em> tem diversos momentos em que não é utilizada;</p></li>
+<li><p>O tempo de espera médio segue uma tendência linearmente crescente (veja-se o gráfico <em>“Waiting Time Evolution”</em>); contudo, quando começam a aparecer os passageiros <em>VIP</em>, o tempo de espera médio sofre uma quebra face ao tempo total da simulação, mantendo a tendência crescente;</p></li>
+<li><p>Relativamente aos tempos, verificamos que a média de espera se situa nos 28.29 minutos, tendo como máximo 75.37 minutos. Se considerarmos somente os passageiros <em>VIP</em>, a média cai para os 18.58 minutos e o máximo para os 38.48 minutos.</p></li>
+</ul>
+<div id="experimentando-a-fila-única-para-os-passageiros-economy" class="section level3">
+<h3>Experimentando a fila única para os passageiros Economy:</h3>
 <pre class="r"><code># Definicao da trajectoria dos passageiros Economy fila única
 
 economy_passenger &lt;- 
     trajectory() %&gt;%
     #log_(&quot;Arrived at Check-In Area.&quot;) %&gt;%
     branch(
-        function() (runif(1) &gt; 0.75) + 1, continue = c(FALSE, FALSE), # 75% tem bagagem, 25% nao tem bagagem
+        # 75% tem bagagem, 25% nao tem bagagem
+        function() (runif(1) &gt; 0.75) + 1, continue = c(FALSE, FALSE), 
         trajectory() %&gt;% # trajectoria do passageiro se tiver bagagem
             #log_(&quot;I have luggage to check.&quot;) %&gt;%
             seize(&quot;standard_counter&quot;) %&gt;%
@@ -598,9 +621,10 @@ economy_passenger &lt;-
                 n = 1,
                 a = triang_counter_min,
                 b = triang_counter_max,
-                c = triang_counter_mode) + extra_time_luggage) %&gt;% # a=min, b=max, c=moda; tem tempo extra da bagagem
+                c = triang_counter_mode) + extra_time_luggage) %&gt;% 
+              # a=min, b=max, c=moda; tem tempo extra da bagagem
             release(&quot;standard_counter&quot;), # %&gt;%
-            #log_(&quot;Check-in completed! Leaving Standard Counter and going to Security Checkpoint.&quot;),
+            #log_(&quot;Check-in completed! Leaving Standard Counter to the Security Checkpoint.&quot;),
         trajectory() %&gt;% # trajectoria do passageiro sem bagagem
             #log_(&quot;I just have carry-on.&quot;) %&gt;%
             seize(&quot;sc_machine&quot;) %&gt;%
@@ -611,39 +635,50 @@ economy_passenger &lt;-
                 b = triang_machine_max,
                 c = triang_machine_mode)) %&gt;% # a=min, b=max, c=moda
             release(&quot;sc_machine&quot;) #%&gt;%
-            #log_(&quot;Check-in completed! Leaving Self Check-In and going to Security Checkpoint.&quot;)
+            #log_(&quot;Check-in completed! Leaving Self Check-In to the Security Checkpoint.&quot;)
     )
 
 # horarios de funcionamento do checkin para passageiros Economy
 economy_checkin_schedule &lt;-
     schedule(
         c(begin_checkin_economy, close_checkin_all),
-        c(2, 0), period = overall_checkin_time) # capacidade de atender 2 passageiros de cada vez
+        # capacidade de atender 2 passageiros de cada vez
+        c(2, 0), period = overall_checkin_time) 
+
 # horário da máquina
 self_checkin_schedule &lt;-
     schedule(
         c(begin_checkin_economy, close_checkin_all),
-        c(1, 0), period = overall_checkin_time) # capacidade de atender 2 passageiros de cada vez
+        # capacidade de atender 2 passageiros de cada vez
+        c(1, 0), period = overall_checkin_time) 
 
-set.seed(42)
+set.seed(42) # repor semente da simulação
 
 # Ambiente de Simulacao (100 vezes)
 envs &lt;- lapply(1:runs, function(i) {
     simmer(&quot;Check-In&quot;) %&gt;%
-    add_resource(&quot;vip_counter&quot;, capacity = vip_checkin_schedule) %&gt;% # so 1 balcao vip, sujeito ao horario checkin vip
-    add_resource(&quot;standard_counter&quot;, capacity = economy_checkin_schedule) %&gt;% # 2 balcoes para passageiros economy
-    add_resource(&quot;sc_machine&quot;, capacity = self_checkin_schedule) %&gt;% # temos uma maquina self-checkin para passageiros sem bagagem
+    add_resource(&quot;vip_counter&quot;, capacity = vip_checkin_schedule) %&gt;% 
+      # so 1 balcao vip, sujeito ao horario checkin vip
+    add_resource(&quot;standard_counter&quot;, capacity = economy_checkin_schedule) %&gt;% 
+      # 2 balcoes para passageiros economy
+    add_resource(&quot;sc_machine&quot;, capacity = self_checkin_schedule) %&gt;% 
+      # temos uma maquina self-checkin para passageiros sem bagagem
     add_generator(&quot;VIP Passenger&quot;, 
+      # &quot;gerador&quot; de passageiros VIP chegam ao check-in com uma distribuicao Poisson (0.85)
                  vip_passenger, 
                  from_to(start_time = begin_checkin_vip,
                          stop_time = close_checkin_all,
-                         dist = function() { c(rpois(n = n_max_vip, lambda = vip_passenger_lambda), -1) },
+                         dist = function() { 
+                           c(rpois(n = n_max_vip, lambda = vip_passenger_lambda), -1) 
+                           },
                          arrive = F),
-                 )  %&gt;% # &quot;gerador&quot; de passageiros VIP chegam ao check-in com uma distribuicao Poisson (0.85)
+                 )  %&gt;% 
     add_generator(&quot;Economy Passenger&quot;, 
+      # &quot;gerador&quot; de passageiros Economy chegam ao check-in com uma distribuicao Poisson (1.7)
                  economy_passenger, 
-                 function() { c(rpois(n = n_max_economy, lambda = economy_passenger_lambda), -1) }
-                 ) %&gt;% # &quot;gerador&quot; de passageiros Economy chegam ao check-in com uma distribuicao Poisson (1.7)
+                 function() { 
+                   c(rpois(n = n_max_economy, lambda = economy_passenger_lambda), -1) 
+                   }) %&gt;% 
     run(until = close_checkin_all) # Simulador do check-in (desenrola-se por 1h20)
 })
 
@@ -678,35 +713,43 @@ summary(arrivals$waiting_time/60)</code></pre>
 summary(arrivals[grepl(&quot;VIP Passenger&quot;, arrivals$name),]$waiting_time/60)</code></pre>
 <pre><code>##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
 ##   0.000   8.899  18.670  18.582  28.359  38.488</code></pre>
+<p>Neste caso em que temos uma fila única de atendimento para os passageiros de classe <em>Economy</em>, o que se observa é que não existe alteração significativa dos tempos de espera. Isto revela que dando a qualquer passageiro que chegue de classe Economy a possibilidade de escolher ir para a fila do balcão 1 ou 2 que seja mais pequena (como verificado na primeira simulação) ou “obrigando-o” a integrar uma fila única e esperar até que um qualquer balcão esteja disponível para atendimento, tem na prática o mesmo efeito. Qualquer um dos métodos - fila única / fila por balcão - poderia ser usado, obtendo-se os mesmos resultados.</p>
 <hr />
 </div>
-<div id="análise-segmentação-de-passageiros" class="section level2">
-<h2>Análise segmentação de passageiros</h2>
-<ol start="2" style="list-style-type: decimal">
-<li>Analise o impacto da segmentação dos passageiros na distribuição do tempo total do processo. Ou seja, analise o impacto de os passageiros Vip serem servidos por um balcão que lhes é dedicado ou não existir este balcão e estes passageiros serem servidos pelos outros dois balcões com uma prioridade maior da dos outros passageiros.</li>
-</ol>
+</div>
+<div id="análise-do-impacto-da-segmentação-dos-passageiros-na-distribuição-do-tempo-total-do-processo." class="section level2">
+<h2>2) Análise do impacto da segmentação dos passageiros na distribuição do tempo total do processo.</h2>
+<p>Ou seja, analise o impacto de os passageiros Vip serem servidos por um balcão que lhes é dedicado ou não existir este balcão e estes passageiros serem servidos pelos outros dois balcões com uma prioridade maior da dos outros passageiros.</p>
 <blockquote>
-<p>Assumimos que os passageiros VIP têm a mesma proporção de bagagem de porão que os outros passageiros.</p>
+<p>Nota: para este cenário, vamos assumir que os passageiros VIP têm a mesma proporção de bagagem de porão que os outros passageiros.</p>
 </blockquote>
 <pre class="r"><code>set.seed(42)
 
 # Ambiente de Simulacao (100 vezes)
 envs &lt;- lapply(1:runs, function(i) {
     simmer(&quot;Check-In&quot;) %&gt;%
-    add_resource(&quot;standard_counter&quot;, capacity = economy_checkin_schedule) %&gt;% # 2 balcoes para passageiros economy
-    add_resource(&quot;sc_machine&quot;, capacity = self_checkin_schedule) %&gt;% # temos uma maquina self-checkin para passageiros sem bagagem
+    # 2 balcoes para passageiros economy
+    add_resource(&quot;standard_counter&quot;, capacity = economy_checkin_schedule) %&gt;% 
+    # temos uma maquina self-checkin para passageiros sem bagagem
+    add_resource(&quot;sc_machine&quot;, capacity = self_checkin_schedule) %&gt;% 
     add_generator(&quot;VIP Passenger&quot;, 
-                 economy_passenger, # os VIP neste caso seguem a trajetoria dos Economy, mas com maior prioridade
+      # &quot;gerador&quot; de passageiros VIP chegam ao check-in com uma distribuicao Poisson (0.85)
+                 economy_passenger, 
                  from_to(start_time = begin_checkin_vip,
                          stop_time = close_checkin_all,
-                         dist = function() { c(rpois(n = n_max_vip, lambda = vip_passenger_lambda), -1) },
+                         dist = function() { 
+                           c(rpois(n = n_max_vip, lambda = vip_passenger_lambda), -1) 
+                           },
                          arrive = F),
+                 # os VIP neste caso seguem a trajetoria dos Economy, mas com maior prioridade
                  priority = 1
-                 )  %&gt;% # &quot;gerador&quot; de passageiros VIP chegam ao check-in com uma distribuicao Poisson (0.85)
+                 )  %&gt;% 
     add_generator(&quot;Economy Passenger&quot;, 
+      # &quot;gerador&quot; de passageiros Economy chegam ao check-in com uma distribuicao Poisson (1.7)
                  economy_passenger, 
-                 function() { c(rpois(n = n_max_economy, lambda = economy_passenger_lambda), -1) }
-                 ) %&gt;% # &quot;gerador&quot; de passageiros Economy chegam ao check-in com uma distribuicao Poisson (1.7)
+                 function() { 
+                   c(rpois(n = n_max_economy, lambda = economy_passenger_lambda), -1) 
+                   }) %&gt;% 
     run(until = close_checkin_all) # Simulador do check-in (desenrola-se por 1h20)
 })
 
@@ -743,6 +786,12 @@ summary(arrivals$waiting_time/60)</code></pre>
 summary(arrivals[grepl(&quot;VIP Passenger&quot;, arrivals$name),]$waiting_time/60)</code></pre>
 <pre><code>##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
 ##   0.000   4.158   9.130  10.730  16.944  32.681</code></pre>
+<p>No caso em que colocamos os passageiros <em>VIP</em> a serem atendidos nos balcões <em>standard</em>, deixando então de ter um balcão exclusivo, mas atribuindo-lhes prioridade no atendimento face aos passageiros de <em>Economy</em>, notamos que existem diferenças no “comportamento” do sistema:</p>
+<ul>
+<li><p>Nos gráficos de utilização dos recursos existem diversas replicações em que percentagem de utilização da máquina de <em>check-in</em> tem um declínio até ao momento em que começam a surgir os primeiros passageiros <em>VIP</em> (aos 2400 segundos - 40 minutos), retomando então aí uma tendência crescente para o limite máximo. Já os 2 balcões de atendimento mantêm uma taxa de utilização no máximo da capacidade.</p></li>
+<li><p>Analisando os tempo de espera, é notório o decréscimo nas suas médias: passamos de 28.29 minutos para 20.65 minutos no caso dos passageiros <em>Economy</em>, e de 18.58 minutos para 10.73 minutos no caso dos passageiros <em>VIP</em>. Olhando para os tempos máximos de espera, nos passageiros <em>Economy</em> temos um ligeiro crescimento (de 75.37 minutos para 76.69 minutos - não relevante) e nos passageiros <em>VIP</em> sofre também um decréscimo (passa dos 38.48 minutos para os 32.68 minutos).</p></li>
+</ul>
+<p>Nesta última simulação é fácil concluir que a criação de balcões de atendimento exclusivos para determinado segmento de clientes não é garantia de um melhor aproveitamento dos recursos e de uma melhor prestação de serviço. O que os dados nos indicam neste caso é que a construção de um sistema com prioridades diferenciadas por segmento nos traz uma melhor optimização do sistema.</p>
 </div>
 </div>
 
