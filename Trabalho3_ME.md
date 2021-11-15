@@ -1,11 +1,12 @@
 ---
 title: "Modelação Estocástica - Trabalho 3"
-subtitle: 'Ciência de Dados - PL - 3º ano| Professora: Catarina Marques'
+subtitle: "Ciência de Dados - PL - 3º ano| Professora: Catarina Marques"
 author: 
 - Catarina Castanheira, 92478
 - João Martins, 93259
 - Joel Paula, 93392
 date: "14/11/2021"
+geometry: margin=2cm
 output:
   html_document: 
     keep_md: yes
@@ -28,10 +29,9 @@ library(extraDistr)
 # ver https://search.r-project.org/CRAN/refmans/extraDistr/html/Triangular.html
 library(simmer)
 library(simmer.plot)
-
-
-set.seed(42)
 ```
+
+# Simulação do Check-in de uma Companhia Aérea
 
 Condições:
 
@@ -78,9 +78,7 @@ Contudo, iremos considerar que apenas estamos a servir um voo.
 
 Analise o tempo total do processo de check-in nos dois cenários seguintes: 
 
-# Análise do impacto da estratégia de fila dos balcões não VIP na distribuição do tempo total do check-in
-
-só 1 min
+## Análise do impacto da estratégia de fila dos balcões não VIP na distribuição do tempo total do check-in
 
 > Decidimos converter todos os tempos em segundos, já que achamos que seria melhor ter essa resolução, para cumprir todas as premissas do problema.
 
@@ -423,7 +421,7 @@ summary(arrivals[grepl("VIP Passenger", arrivals$name),]$waiting_time/60)
  
  ___________________________________________________________________________________
 
-# Análise segmentação de passageiros
+## Análise segmentação de passageiros
 
 2) Analise o impacto da segmentação dos passageiros na distribuição do tempo total do
 processo. Ou seja, analise o impacto de os passageiros Vip serem servidos por um balcão que lhes é dedicado ou não existir este balcão e estes passageiros serem servidos pelos outros dois balcões com uma prioridade maior da dos outros passageiros. 

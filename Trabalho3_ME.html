@@ -376,10 +376,9 @@ pre code {
 library(extraDistr) 
 # ver https://search.r-project.org/CRAN/refmans/extraDistr/html/Triangular.html
 library(simmer)
-library(simmer.plot)
-
-
-set.seed(42)</code></pre>
+library(simmer.plot)</code></pre>
+<div id="simulação-do-check-in-de-uma-companhia-aérea" class="section level1">
+<h1>Simulação do Check-in de uma Companhia Aérea</h1>
 <p>Condições:</p>
 <ul>
 <li><p>Os voos são de 170 passageiros, contudo a ocupação dos voos pode não ser completa;</p></li>
@@ -430,9 +429,8 @@ set.seed(42)</code></pre>
 </ul>
 <hr />
 <p>Analise o tempo total do processo de check-in nos dois cenários seguintes:</p>
-<div id="análise-do-impacto-da-estratégia-de-fila-dos-balcões-não-vip-na-distribuição-do-tempo-total-do-check-in" class="section level1">
-<h1>Análise do impacto da estratégia de fila dos balcões não VIP na distribuição do tempo total do check-in</h1>
-<p>só 1 min</p>
+<div id="análise-do-impacto-da-estratégia-de-fila-dos-balcões-não-vip-na-distribuição-do-tempo-total-do-check-in" class="section level2">
+<h2>Análise do impacto da estratégia de fila dos balcões não VIP na distribuição do tempo total do check-in</h2>
 <blockquote>
 <p>Decidimos converter todos os tempos em segundos, já que achamos que seria melhor ter essa resolução, para cumprir todas as premissas do problema.</p>
 </blockquote>
@@ -682,8 +680,8 @@ summary(arrivals[grepl(&quot;VIP Passenger&quot;, arrivals$name),]$waiting_time/
 ##   0.000   8.899  18.670  18.582  28.359  38.488</code></pre>
 <hr />
 </div>
-<div id="análise-segmentação-de-passageiros" class="section level1">
-<h1>Análise segmentação de passageiros</h1>
+<div id="análise-segmentação-de-passageiros" class="section level2">
+<h2>Análise segmentação de passageiros</h2>
 <ol start="2" style="list-style-type: decimal">
 <li>Analise o impacto da segmentação dos passageiros na distribuição do tempo total do processo. Ou seja, analise o impacto de os passageiros Vip serem servidos por um balcão que lhes é dedicado ou não existir este balcão e estes passageiros serem servidos pelos outros dois balcões com uma prioridade maior da dos outros passageiros.</li>
 </ol>
@@ -745,6 +743,7 @@ summary(arrivals$waiting_time/60)</code></pre>
 summary(arrivals[grepl(&quot;VIP Passenger&quot;, arrivals$name),]$waiting_time/60)</code></pre>
 <pre><code>##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
 ##   0.000   4.158   9.130  10.730  16.944  32.681</code></pre>
+</div>
 </div>
 
 
