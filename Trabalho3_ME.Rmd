@@ -78,7 +78,7 @@ Contudo, iremos considerar que apenas estamos a servir um voo.
 
 Analise o tempo total do processo de check-in nos dois cenários seguintes: 
 
-## Análise do impacto da estratégia de fila dos balcões não VIP na distribuição do tempo total do check-in
+## 1) Análise do impacto da estratégia de fila dos balcões não VIP na distribuição do tempo total do check-in
 
 > Decidimos converter todos os tempos em segundos, já que achamos que seria melhor ter essa resolução, para cumprir todas as premissas do problema.
 
@@ -227,8 +227,15 @@ summary(arrivals$waiting_time/60)
 summary(arrivals[grepl("VIP Passenger", arrivals$name),]$waiting_time/60)
 
 ```
- 
- Experimentando a fila única para os passageiros Economy:
+Nesta primeira simulação, em que temos filas individuais para cada balcão de atendimento, verificamos o seguinte:
+ * Qualquer um dos recursos (máquina de check-in, balcão VIP, e os dois balcões para classe Economy) são usados a 100% (gráficos Resource Utilization e Resource Usage), a partir do momento em que aparecem passageiros. Nos gráficos respeitantes ao "Resource Usage" com o parâmetro "steps" activo, podemos verificar que a máquina de check-in tem diversos momentos em que não é utilizada; 
+ * O tempo de espera médio segue uma tendência linearmente crescente (veja-se o gráfico "Waiting Time Evolution"); contudo, quando começam a aparecer os passageiros VIP, o tempo de espera médio sofre uma quebra face ao tempo total da simulação, mantendo a tendência crescente;
+ * Relativamente aos tempos, verificamos que a média de espera se situa nos 28.29 minutos, tendo como máximo 75.37 minutos. Se considerarmos somente os passageiros VIP, a média cai para os 18.58 minutos e o máximo para os 38.48 minutos.
+
+
+
+
+ > Experimentando a fila única para os passageiros Economy:
  
 ```{r message=FALSE}
 # Definicao da trajectoria dos passageiros Economy fila única
@@ -323,16 +330,15 @@ summary(arrivals$waiting_time/60)
 summary(arrivals[grepl("VIP Passenger", arrivals$name),]$waiting_time/60)
 
 ```
+
+Neste caso em que temos uma fila única de atendimento para os passageiros de classe Economy, o que se observa é que não existe alteração significativa dos tempos de espera. Isto revela que dando a qualquer passageiro que chegue de classe Economy a possibilidade de escolher ir para a fila do balcão 1 ou 2 que seja mais pequena (como verificado na primeira simulação) ou "obrigando-o" a integrar uma fila única e esperar até que um qualquer balcão esteja disponível para atendimento, tem na prática o mesmo efeito. Qualquer um dos métodos - fila única / fila por balcão - poderia ser usado, obtendo-se os mesmos resultados.
  
  
  ___________________________________________________________________________________
 
-## Análise segmentação de passageiros
+## 2) Análise do impacto da segmentação dos passageiros na distribuição do tempo total do processo. Ou seja, analise o impacto de os passageiros Vip serem servidos por um balcão que lhes é dedicado ou não existir este balcão e estes passageiros serem servidos pelos outros dois balcões com uma prioridade maior da dos outros passageiros. 
 
-2) Analise o impacto da segmentação dos passageiros na distribuição do tempo total do
-processo. Ou seja, analise o impacto de os passageiros Vip serem servidos por um balcão que lhes é dedicado ou não existir este balcão e estes passageiros serem servidos pelos outros dois balcões com uma prioridade maior da dos outros passageiros. 
-
-> Assumimos que os passageiros VIP têm a mesma proporção de bagagem de porão que os outros passageiros.
+> Para este cenário, vamos assumir que os passageiros VIP têm a mesma proporção de bagagem de porão que os outros passageiros.
 
 ```{r}
 set.seed(42)
@@ -386,4 +392,9 @@ summary(arrivals[grepl("VIP Passenger", arrivals$name),]$waiting_time/60)
 ```
 
 
+No caso em que colocamos os passageiros VIP a serem atendidos nos balcões standard, deixando então de ter um balcão exclusivo, mas atribuindo-lhes prioridade no atendimento face aos passageiros de Economy, notamos que existem diferenças no "comportamento" do sistema:
+ * Nos gráficos de utilização dos recursos existem diversas replicações em que percentagem de utilização da máquina de check-in tem um declínio até ao momento em que começam a surgir os primeiros passageiros VIP (aos 2400 segundos), retomando então aí uma tendência crescente para o limite máximo. Já os 2 balcões de atendimento mantêm uma taxa de utilização no máximo da capacidade.
+ * Analisando os tempo de espera, é notório o decréscimo nas suas médias: passamos de 28.29 minutos para 20.65 minutos no caso dos passageiros Economy, e de 18.58 minutos para 10.73 minutos no caso dos passageiros VIP. Olhando para os tempos máximos de espera, nos passageiros Economy temos um ligeiro crescimento (de 75.37 minutos para 76.69 minutos - não relevante) e nos passageiros VIP sofre também um descréscimo (passa dos 38.48 minutos para os 32.68 minutos).
+ 
+Nesta última simulação é fácil concluir que a criação de balcões de atendimento exclusivos para determinado segmento de clientes não é garantia de um melhor aproveitamento dos recursos e de uma melhor prestação de serviço. O que os dados nos indicam neste caso é que a construção de um sistema com prioridades diferenciadas por segmento nos traz uma melhor optimização do sistema.
 
