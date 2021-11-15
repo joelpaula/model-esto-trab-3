@@ -11,7 +11,7 @@ Autores | Authors:
 
 Read the report in on of the formats:
 
-[MarkDown](/Trabalho3_ME.md)
-[Html](/Trabalho3_ME.html)
-[PDF](/Trabalho3_ME.pdf)
+[MarkDown](/Trabalho3_ME.md) |
+ [Html](/Trabalho3_ME.html) |
+ [PDF](/Trabalho3_ME.pdf)
 
