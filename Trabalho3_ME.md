@@ -12,6 +12,8 @@ output:
     keep_md: yes
   pdf_document: default
 header-includes:
+- \usepackage[sfdefault]{roboto}
+- \renewcommand{\familydefault}{\sfdefault}
 - \usepackage{titling}
 - \pretitle{\par\vspace{50mm}\begin{center}
 - \posttitle{\par\vspace{100mm}\end{center}} \includegraphics[width=2in,height=2in]{rgb_iscte_pt_horizontal_positive.png}\LARGE\\}
@@ -296,9 +298,9 @@ summary(arrivals[grepl("VIP Passenger", arrivals$name),]$waiting_time/60)
 
 Nesta primeira simulação, em que temos filas individuais para cada balcão de atendimento, verificamos o seguinte:
 
- * Qualquer um dos recursos (máquina de _check-in_, balcão _VIP_, e os dois balcões para classe _Economy_) são usados a 100% (gráficos _Resource Utilization_ e _Resource Usage_), a partir do momento em que aparecem passageiros. Nos gráficos respeitantes ao _"Resource Usage"_ com o parâmetro _"steps"_ activo, podemos verificar que a máquina de _check-in_ tem diversos momentos em que não é utilizada; 
+ * Qualquer um dos recursos (máquina de _check-in_, balcão _VIP_, e os dois balcões para classe _Economy_) são usados a 100% (gráficos _Resource Utilization_ e _Resource Usage_), a partir do momento em que aparecem passageiros. Nos gráficos respeitantes ao _"Resource Usage"_ com o parâmetro _"steps"_ activo, podemos verificar que a máquina de _check-in_ tem diversos momentos em que não é utilizada.
 
- * O tempo de espera médio segue uma tendência linearmente crescente (veja-se o gráfico _"Waiting Time Evolution"_); contudo, quando começam a aparecer os passageiros _VIP_, o tempo de espera médio sofre uma quebra face ao tempo total da simulação, mantendo a tendência crescente;
+ * O tempo de espera médio segue uma tendência linearmente crescente (veja-se o gráfico _"Waiting Time Evolution"_); contudo, quando começam a aparecer os passageiros _VIP_, o tempo de espera médio sofre uma quebra face ao tempo total da simulação, mantendo a tendência crescente. Isto deve-se ao facto de esses passageiros estarem a chegar naquele momento, tendo um tempo de espera ainda curto e serem imediatamente atendidos.
 
  * Relativamente aos tempos, verificamos que a média de espera se situa nos 28.29 minutos, tendo como máximo 75.37 minutos. Se considerarmos somente os passageiros _VIP_, a média cai para os 18.58 minutos e o máximo para os 38.48 minutos.
 
@@ -454,7 +456,7 @@ summary(arrivals[grepl("VIP Passenger", arrivals$name),]$waiting_time/60)
 ##   0.000   8.899  18.670  18.582  28.359  38.488
 ```
 
-Neste caso em que temos uma fila única de atendimento para os passageiros de classe _Economy_, o que se observa é que não existe alteração significativa dos tempos de espera. Isto revela que dando a qualquer passageiro que chegue de classe Economy a possibilidade de escolher ir para a fila do balcão 1 ou 2 que seja mais pequena (como verificado na primeira simulação) ou "obrigando-o" a integrar uma fila única e esperar até que um qualquer balcão esteja disponível para atendimento, tem na prática o mesmo efeito. Qualquer um dos métodos - fila única / fila por balcão - poderia ser usado, obtendo-se os mesmos resultados.
+Neste caso em que temos uma fila única de atendimento para os passageiros de classe _Economy_, o que se observa é que não existe alteração significativa dos tempos de espera. Isto revela que dando a qualquer passageiro que chegue de classe _Economy_ a possibilidade de escolher ir para a fila do balcão 1 ou 2 que seja mais pequena (como verificado na primeira simulação) ou "obrigando-o" a integrar uma fila única e esperar até que um qualquer balcão esteja disponível para atendimento, tem na prática o mesmo efeito. Qualquer um dos métodos - fila única / uma fila por balcão - poderia ser usado, obtendo-se os mesmos resultados.
  
  
  ___________________________________________________________________________________
@@ -579,7 +581,7 @@ summary(arrivals[grepl("VIP Passenger", arrivals$name),]$waiting_time/60)
 
 No caso em que colocamos os passageiros _VIP_ a serem atendidos nos balcões _standard_, deixando então de ter um balcão exclusivo, mas atribuindo-lhes prioridade no atendimento face aos passageiros de _Economy_, notamos que existem diferenças no "comportamento" do sistema:
 
- * Nos gráficos de utilização dos recursos existem diversas replicações em que percentagem de utilização da máquina de _check-in_ tem um declínio até ao momento em que começam a surgir os primeiros passageiros _VIP_ (aos 2400 segundos - 40 minutos), retomando então aí uma tendência crescente para o limite máximo. Já os 2 balcões de atendimento mantêm uma taxa de utilização no máximo da capacidade.
+ * Nos gráficos de utilização dos recursos existem diversas replicações em que a percentagem de utilização da máquina de _check-in_ tem um declínio até ao momento em que começam a surgir os primeiros passageiros _VIP_ (aos 2400 segundos - 40 minutos), retomando então aí uma tendência crescente para o limite máximo. Já os 2 balcões de atendimento mantêm uma taxa de utilização no máximo da capacidade.
  
  * Analisando os tempo de espera, é notório o decréscimo nas suas médias: passamos de 28.29 minutos para 20.65 minutos no caso dos passageiros _Economy_, e de 18.58 minutos para 10.73 minutos no caso dos passageiros _VIP_. Olhando para os tempos máximos de espera, nos passageiros _Economy_ temos um ligeiro crescimento (de 75.37 minutos para 76.69 minutos - não relevante) e nos passageiros _VIP_ sofre também um decréscimo (passa dos 38.48 minutos para os 32.68 minutos).
  
